@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -10,45 +11,24 @@ int main() {
 	int count;
 	cin >> count;
 
-	vector<int> v; 
-	v.reserve(count);
-	int sum = 1;
+	vector<int> aVector(count); 
+	int sum = 0;
 
-	for (int i = 0; i < count; i++) {
-		if (i == 0) {
-			v.push_back(1);
-			continue;
-		}
-
+	for (int i = 1; i < count; i++) {
 		int value;
 		cin >> value;
 		sum += value;
-
-		v.push_back(sum);
+		aVector[i] = sum;
 	}
 
-	int min = v[0]; int max = v[0];
-	for (int i = 1; i < count; i++) {
-		if (min > v[i]) {
-			min = v[i]; continue;
-		}
-		if (max < v[i]) {
-			max = v[i];
-		}
-	}
+	int min = *min_element(aVector.begin(), aVector.end());
+	int max = *max_element(aVector.begin(), aVector.end());
 
 	if ((max - min) == count - 1) {
-		if (min != v[0]) {
-			for (int num : v) {
-				num += (1 - min);
-				cout << num << ' ';
-			}
-		}
-		else {
-			for (int num : v) {
-				cout << num << ' ';
-			}
-		}
+		int offset = 1 - min;
+
+		for (int num : aVector)
+			cout << num + offset << ' ';
 
 		cout << '\n';
 	}
