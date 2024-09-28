@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -7,5 +8,6 @@ int main() {
 	cin >> ab >> bc >> cd;  
 
 	double da = (double)(ab * cd) / bc;
-	cout << da << '\n';
+
+	cout << setprecision(10) << da;
 }
