@@ -1,32 +1,28 @@
 #include <iostream>
+#include <queue>
 #include <vector>
 
 using namespace std;
-
-int giveBribe(vector<int>& votes) {
-	int maxIndex = 0;
-	for (int i = 0; i < votes.size(); i++) {
-		if (votes[maxIndex] <= votes[i])
-			maxIndex = i;
-	}
-	if (maxIndex != 0) {
-		votes[maxIndex]--;
-		votes[0]++;
-	}
-
-	return maxIndex;
-}
 
 int main() {
 	int candidateCount;
 	cin >> candidateCount;
 
 	vector<int> votes(candidateCount);
+	priority_queue<int> maxHeap;
 	for (int i = 0; i < candidateCount; i++) {
 		cin >> votes[i];
+		if (i > 0) maxHeap.push(votes[i]);
 	}
 	
 	int result = 0;
-	while (giveBribe(votes) != 0) { result++; }
+	while (!maxHeap.empty() && votes[0] <= maxHeap.top()) {
+		int topVotes = maxHeap.top();
+		maxHeap.pop();
+		topVotes--;
+		votes[0]++;
+		result++;
+		maxHeap.push(topVotes);
+	}
 	cout << result;
 }
