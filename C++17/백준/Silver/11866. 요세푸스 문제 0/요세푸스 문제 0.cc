@@ -9,6 +9,7 @@ private:
 
 public:
 	Queue(int size){
+		queue.reserve(size);
 		for (int i = 0; i < size; i++) {
 			queue.push_back(i + 1);
 		}
@@ -19,19 +20,9 @@ public:
 	}
 
 	int Dequeue() {
-		if (isEmpty()) return NULL;
-		int temp = queue[0];
+		int frontValue = queue.front();
 		queue.erase(queue.begin());
-		return temp;
-	}
-
-	bool isEmpty() const {
-		return queue.size() == 0;
-	}
-
-	int top() const {
-		if (isEmpty()) return NULL;
-		return queue[0];
+		return frontValue;
 	}
 
 	int size() const {
