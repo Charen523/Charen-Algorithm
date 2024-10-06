@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
@@ -9,29 +8,27 @@ int main() {
 
 	bool coogieCoin[10] = { false };
 	for (int i = 9; i >= 0; i--) {
-		int curCoin = pow(2, i);
+		int coinValue = 1 << i;
 		
-		if (price - curCoin >= 0) {
-			price -= curCoin;
+		if (price >= coinValue) {
+			price -= coinValue;
 		}
-		if (coogieCash - curCoin >= 0) {
-			coogieCash -= curCoin;
+		if (coogieCash >= coinValue) {
+			coogieCash -= coinValue;
 			coogieCoin[i] = true;
 		}
 
-		if (price == 0 && coogieCash == 0) break;
-	}
-
-	if (price == 0) {
-		cout << "No thanks";
-		return 0;
+		if (price == 0) {
+			cout << "No thanks";
+			return 0;
+		}
 	}
 
 	for (int i = 9; i >= 0; i--) {
 		if (coogieCoin[i]) {
-			int curCoin = pow(2, i);
-			if (price - curCoin >= 0) {
-				price -= curCoin;
+			int coinValue = 1 << i;
+			if (price >= coinValue) {
+				price -= coinValue;
 			}
 
 			if (price == 0) {
