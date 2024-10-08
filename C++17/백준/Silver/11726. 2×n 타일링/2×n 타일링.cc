@@ -4,10 +4,10 @@
 using namespace std;
 
 int main() {
-	long long n;
+	int n;
 	cin >> n;
 
-	vector<long long> cases(n + 1);
+	vector<int> cases(n + 1);
 	cases[0] = 1;
 	cases[1] = 1;
 
