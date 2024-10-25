@@ -41,29 +41,22 @@ int main() {
 		visitOrder[i] = nationsMap[word];
 	}
 
-	bool isSouthAfrica = false; //나미비아 비자 할인
+	bool isSouthAfrica = false;
 	bool isZ = false;
 	int result = 0;
 
 	for (int i = 0; i < testCase; i++) {
 		switch (visitOrder[i]) {
 		case Nations::botswana:
-			//무비자
-			break;
-		case Nations::ethiopia:
-			result += 50;
-			break;
-		case Nations::kenya:
-			result += 50;
-			break;
-		case Nations::namibia:
-			if (isSouthAfrica) result += 40;
-			else result += 140;
 			break;
 		case Nations::south_africa:
-			//무비자
 			isSouthAfrica = true;
 			break;
+		case Nations::namibia:
+			result += isSouthAfrica ? 40 : 140;
+			break;
+		case Nations::ethiopia:
+		case Nations::kenya:
 		case Nations::tanzania:
 			result += 50;
 			break;
