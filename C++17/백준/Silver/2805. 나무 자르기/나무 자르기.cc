@@ -6,9 +6,10 @@ using namespace std;
 
 static long long cutCount(const vector<int>& trees, int cut) {
 	long long result = 0;
-
-	for (int i = 0; i < trees.size(); i++) {
-		result += max(0, trees[i] - cut);
+	for (int height : trees) {
+		if (height > cut) {
+			result += height - cut;
+		}
 	}
 	return result;
 }
@@ -24,7 +25,7 @@ int main() {
 	int maxHeight = 0;
 	for (int i = 0; i < N; i++) {
 		cin >> trees[i];
-		if (maxHeight < trees[i]) maxHeight = trees[i];
+		maxHeight = max(maxHeight, trees[i]);
 	}
 
 	int left = 0, right = maxHeight, result = 0;
