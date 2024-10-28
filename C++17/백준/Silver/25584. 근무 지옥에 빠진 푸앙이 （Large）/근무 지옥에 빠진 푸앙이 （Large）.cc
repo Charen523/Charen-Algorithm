@@ -1,63 +1,41 @@
 #include <iostream>
 #include <map>
-#include <climits>
+#include <climits> // INT_MIN, INT_MAX
+
 using namespace std;
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
 
-	int weeks;
-	cin >> weeks;
+    int weeks;
+    cin >> weeks;
 
-	map<string, int> workTimes;
-	for (int i = 0; i < weeks; i++) {
-		for (int timeline = 0; timeline < 4; timeline++) {
-			int curTime = 0;
+    map<string, int> workTimes;
+    for (int i = 0; i < weeks; i++) {
+        for (int timeline = 0; timeline < 4; timeline++) {
+            int curTime = (timeline == 1) ? 6 : (timeline == 3) ? 10 : 4;
+            
+            for (int day = 0; day < 7; day++) {
+                string name;
+                cin >> name;
+                if (name != "-") {
+                    workTimes[name] += curTime;
+                }
+            }
+        }
+    }
 
-			switch (timeline) {
-			case 0:
-			case 2:
-				curTime = 4;
-				break;
-			case 1:
-				curTime = 6;
-				break;
-			case 3:
-				curTime = 10;
-				break;
-			}
-			
-			for (int day = 0; day < 7; day++) {
-				string name;
-				cin >> name;
+    if (workTimes.empty()) {
+        cout << "Yes";
+        return 0;
+    }
 
-				if (name == "-") continue;
-				else if (workTimes.count(name) == 0) {
-					workTimes.emplace(name, curTime);
-				}
-				else {
-					workTimes[name] += curTime;
-				}
-			}
-		}
-	}
+    int maxTime = INT_MIN, minTime = INT_MAX;
+    for (const auto& [name, time] : workTimes) {
+        maxTime = max(maxTime, time);
+        minTime = min(minTime, time);
+    }
 
-	if (workTimes.empty()) {
-		cout << "Yes";
-		return 0;
-	}
-
-	int max = INT_MIN, min = INT_MAX;
-	for (const auto& time : workTimes) {
-		if (max < time.second) max = time.second;
-		if (min > time.second) min = time.second;
-	}
-
-	if (max - min > 12) {
-		cout << "No";
-	}
-	else {
-		cout << "Yes";
-	}
+    cout << ((maxTime - minTime > 12) ? "No" : "Yes");
 }
