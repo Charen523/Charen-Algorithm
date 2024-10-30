@@ -1,36 +1,32 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
 
-	int testCase;
-	cin >> testCase;
+    int testCase;
+    cin >> testCase;
 
-	vector<int> input(testCase);
-	vector<int> numSet;
+    vector<int> input(testCase);
+    for (int i = 0; i < testCase; i++) {
+        cin >> input[i];
+    }
 
-	for (int i = 0; i < testCase; i++) {
-		cin >> input[i];
-	}
+    vector<int> numSet = input;
+    sort(numSet.begin(), numSet.end());
+    numSet.erase(unique(numSet.begin(), numSet.end()), numSet.end());
 
-	numSet = input;
-	sort(numSet.begin(), numSet.end());
-	numSet.erase(unique(numSet.begin(), numSet.end()), numSet.end());
+    string result;
+    for (int i = 0; i < testCase; i++) {
+        int index = lower_bound(numSet.begin(), numSet.end(), input[i]) - numSet.begin();
+        result += to_string(index) + " ";
+    }
 
-	unordered_map<int, int> orderedNum_index;
-	int j = 0;
-	for (const int& num : numSet) {
-		orderedNum_index[num] = j;
-		j++;
-	}
-
-	for (int i = 0; i < testCase; i++) {
-		cout << orderedNum_index[input[i]] << ' ';
-	}
+    cout << result;
+    return 0;
 }
