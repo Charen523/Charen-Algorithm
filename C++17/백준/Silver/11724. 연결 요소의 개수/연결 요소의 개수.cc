@@ -58,12 +58,10 @@ int main() {
 						}
 						swap(graphs[j], graphs[graphs.size() - 1]);
 						graphs.pop_back();
-
 						break;
 					}
 					else {
 						dots.insert(dot1);
-
 						graphs[j].insert(dot1);
 						isFound = true;
 						firstFoundIdx = j;
