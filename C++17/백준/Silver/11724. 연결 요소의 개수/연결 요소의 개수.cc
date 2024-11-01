@@ -4,28 +4,17 @@
 
 using namespace std;
 
-void printGraph(vector<unordered_set<int>> graphs) {
-	cout << endl;
-	for (int i = 0; i < graphs.size(); i++) {
-		for (const int& num : graphs[i]) {
-			cout << num << ' ';
-		}
-		cout << endl;
-	}
-	cout << endl;
-}
-
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int N, M;
-	cin >> N >> M;
+	int vertices, edges;
+	cin >> vertices >> edges;
 
 	vector<unordered_set<int>> graphs; //입력받을 여러 그래프들.
 	unordered_set<int> dots; //점들의 존재 여부.
 
-	for (int i = 0; i < M; i++) {
+	for (int i = 0; i < edges; i++) {
 		int dot1, dot2;
 		cin >> dot1 >> dot2;
 
@@ -42,7 +31,6 @@ int main() {
 			graphs.push_back(newSet);
 
 			/*다음 입력 받기*/
-			//printGraph(graphs);
 			continue;
 		}
 
@@ -52,20 +40,11 @@ int main() {
 		if (dots.count(dot1) != 0) {
 			for (int j = 0; j < graphs.size(); j++) {
 				if (graphs[j].count(dot1) != 0) {
-					if (isFound) { //또 다른 그래프가 발견된 경우
-						for (const int& num : graphs[j]) {
-							graphs[firstFoundIdx].insert(num);
-						}
-						swap(graphs[j], graphs[graphs.size() - 1]);
-						graphs.pop_back();
-					}
-					else {
-						dots.insert(dot2);
+					dots.insert(dot2);
 
-						graphs[j].insert(dot2);
-						isFound = true;
-						firstFoundIdx = j;
-					}
+					graphs[j].insert(dot2);
+					isFound = true;
+					firstFoundIdx = j;
 				}
 			}
 		}
@@ -79,6 +58,8 @@ int main() {
 						}
 						swap(graphs[j], graphs[graphs.size() - 1]);
 						graphs.pop_back();
+
+						break;
 					}
 					else {
 						dots.insert(dot1);
@@ -90,12 +71,11 @@ int main() {
 				}
 			}
 		}
-		//printGraph(graphs);
 	}
 
 	int result = graphs.size();
-	if (dots.size() < N) {
-		result += N - dots.size();
+	if (dots.size() < vertices) {
+		result += vertices - dots.size();
 	}
 
 	cout << result;
