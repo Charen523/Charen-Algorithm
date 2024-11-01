@@ -1,80 +1,62 @@
 #include <iostream>
 #include <vector>
-#include <unordered_set>
 
 using namespace std;
 
+class UnionFind {
+private:
+    vector<int> parent;
+    vector<int> rank;
+
+public:
+    UnionFind(int n) : parent(n), rank(n, 0) {
+        for (int i = 0; i < n; i++) parent[i] = i;
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    void unite(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+        if (rootX != rootY) {
+            if (rank[rootX] > rank[rootY]) {
+                parent[rootY] = rootX;
+            } else if (rank[rootX] < rank[rootY]) {
+                parent[rootX] = rootY;
+            } else {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+};
+
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
 
-	int vertices, edges;
-	cin >> vertices >> edges;
+    int vertices, edges;
+    cin >> vertices >> edges;
 
-	vector<unordered_set<int>> graphs; //입력받을 여러 그래프들.
-	unordered_set<int> dots; //점들의 존재 여부.
+    UnionFind uf(vertices);
+    for (int i = 0; i < edges; i++) {
+        int dot1, dot2;
+        cin >> dot1 >> dot2;
+        uf.unite(dot1 - 1, dot2 - 1);  // 입력이 1부터 시작한다고 가정하여 0 기반으로 변환
+    }
 
-	for (int i = 0; i < edges; i++) {
-		int dot1, dot2;
-		cin >> dot1 >> dot2;
+    int components = 0;
+    for (int i = 0; i < vertices; i++) {
+        if (uf.find(i) == i) {  // 루트 노드가 자기 자신인 경우 컴포넌트로 카운트
+            components++;
+        }
+    }
 
-		/*두 점 모두 처음 등장한 경우*/
-		if (dots.count(dot1) == 0 && dots.count(dot2) == 0) {
-			/*vertices 정보 기록*/
-			dots.insert(dot1);
-			dots.insert(dot2);
-
-			/*새 그래프 생성*/
-			unordered_set<int> newSet;
-			newSet.insert(dot1);
-			newSet.insert(dot2);
-			graphs.push_back(newSet);
-
-			/*다음 입력 받기*/
-			continue;
-		}
-
-		bool isFound = false; //첫 발견 여부
-		int firstFoundIdx = 0;
-		
-		if (dots.count(dot1) != 0) {
-			for (int j = 0; j < graphs.size(); j++) {
-				if (graphs[j].count(dot1) != 0) {
-					dots.insert(dot2);
-
-					graphs[j].insert(dot2);
-					isFound = true;
-					firstFoundIdx = j;
-				}
-			}
-		}
-		
-		if (dots.count(dot2) != 0) {
-			for (int j = 0; j < graphs.size(); j++) {
-				if (graphs[j].count(dot2) != 0) {
-					if (isFound && j != firstFoundIdx) { //또 다른 그래프가 발견된 경우
-						for (const int& num : graphs[j]) {
-							graphs[firstFoundIdx].insert(num);
-						}
-						swap(graphs[j], graphs[graphs.size() - 1]);
-						graphs.pop_back();
-						break;
-					}
-					else {
-						dots.insert(dot1);
-						graphs[j].insert(dot1);
-						isFound = true;
-						firstFoundIdx = j;
-					}
-				}
-			}
-		}
-	}
-
-	int result = graphs.size();
-	if (dots.size() < vertices) {
-		result += vertices - dots.size();
-	}
-
-	cout << result;
+    cout << components;
+    return 0;
 }
