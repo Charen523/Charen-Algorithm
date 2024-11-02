@@ -1,40 +1,38 @@
 #include <iostream>
 #include <string>
+#include <algorithm> // max 사용을 위해 포함
 
 using namespace std;
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
 
-	int testCase;
-	cin >> testCase;
+    int testCase;
+    cin >> testCase;
 
-	string result = "";
+    while (testCase--) {
+        int pieceCount;
+        cin >> pieceCount;
 
-	for (int i = 0; i < testCase; i++) {
-		int pieceCount;
-		cin >> pieceCount;
+        string curPieceState, targetPieceState;
+        cin >> curPieceState >> targetPieceState;
 
-		string curPieceState, targetPieceState;
-		cin >> curPieceState >> targetPieceState;
+        int whiteCount = 0, blackCount = 0;
 
-		int whiteCount = 0, blackCount = 0;
-		
-		for (int i = 0; i < pieceCount; i++) {
-			if (curPieceState[i] != targetPieceState[i]) {
-				if (curPieceState[i] == 'W') {
-					whiteCount++;
-				}
-				else {
-					blackCount++;
-				}
-			}
-		}
+        for (int i = 0; i < pieceCount; i++) {
+            if (curPieceState[i] != targetPieceState[i]) {
+                if (curPieceState[i] == 'W') {
+                    whiteCount++;
+                }
+                else {
+                    blackCount++;
+                }
+            }
+        }
 
-		int testResult = (whiteCount > blackCount) ? whiteCount : blackCount;
-		result += to_string(testResult) + '\n';
-	}
+        cout << max(whiteCount, blackCount) << '\n';
+    }
 
-	cout << result;
+    return 0;
 }
