@@ -4,11 +4,9 @@
 using namespace std;
 
 struct Color {
-	int R;
-	int G;
-	int B;
-
-	Color() : R(0), G(0), B(0) {}
+	int red;
+	int green;
+	int blue;
 };
 
 int main() {
@@ -16,23 +14,17 @@ int main() {
 	cin.tie(NULL);
 
 	int testCase; cin >> testCase;
-	
-	vector<Color> paintPrice(testCase);
-	for (int i = 0; i < testCase; i++) {
-		cin >> paintPrice[i].R >> paintPrice[i].G >> paintPrice[i].B;
-	}
 
-	vector<vector<int>> dp(testCase, vector<int>(3, 0));
-	dp[0][0] = paintPrice[0].R;
-	dp[0][1] = paintPrice[0].G;
-	dp[0][2] = paintPrice[0].B;
+	vector<Color> dp(testCase);
+	for (int i = 0; i < testCase; i++) {
+		cin >> dp[i].red >> dp[i].green >> dp[i].blue;
+	}
 
 	for (int i = 1; i < testCase; i++) {
-		dp[i][0] = paintPrice[i].R + min(dp[i - 1][1], dp[i - 1][2]);
-		dp[i][1] = paintPrice[i].G + min(dp[i - 1][0], dp[i - 1][2]);
-		dp[i][2] = paintPrice[i].B + min(dp[i - 1][0], dp[i - 1][1]);
+		dp[i].red = dp[i].red + min(dp[i - 1].green, dp[i - 1].blue);
+		dp[i].green = dp[i].green + min(dp[i - 1].red, dp[i - 1].blue);
+		dp[i].blue = dp[i].blue + min(dp[i - 1].red, dp[i - 1].green);
 	}
-
-	int result = min(dp[testCase - 1][0], min(dp[testCase - 1][1], dp[testCase - 1][2]));
+	int result = min(dp[testCase - 1].red, min(dp[testCase - 1].green, dp[testCase - 1].blue));
 	cout << result;
 }
