@@ -1,24 +1,22 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
     int N;
     cin >> N;
 
-    long long dp[91][2] = {0};  // 최대 90자리 이친수, long long으로 선언
-
-    // 초기값 설정
+    vector<vector<long long>> dp(N + 1, vector<long long>(2));
+    
     dp[1][0] = 0;
     dp[1][1] = 1;
 
-    // DP 점화식 계산
     for (int i = 2; i <= N; i++) {
-        dp[i][0] = dp[i-1][0] + dp[i-1][1];
-        dp[i][1] = dp[i-1][0];
+        dp[i][0] = dp[i - 1][0] + dp[i - 1][1];
+        dp[i][1] = dp[i - 1][0];
     }
-
-    // 결과 출력
-    cout << dp[N][0] + dp[N][1] << endl;
-
-    return 0;
+    cout << dp[N][0] + dp[N][1] << '\n';
 }
