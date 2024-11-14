@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -11,19 +12,8 @@ int main() {
 	string M;
 	cin >> N >> M >> K;
 
-	int min = (N - K > 0)? N - K : 0;
-	bool isDivided = true;
+	int start = max(0, N - K);
+	bool isDivided = all_of(M.begin() + start, M.end(), [](char c) { return c == '0'; });
 
-	for (int i = min; i < N; i++) {
-		if (M[i] == '1') {
-			isDivided = false;
-			break;
-		}
-	}
-	if (isDivided) {
-		cout << "YES";
-	}
-	else {
-		cout << "NO";
-	}
+	cout << (isDivided ? "YES" : "NO");
 }
