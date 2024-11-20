@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-
 using namespace std;
 
 int N, M;
@@ -14,13 +13,8 @@ void solve(int start) {
 		return;
 	}
 
-	for (int i = 1; i <= N; i++) {
-		if (!(combination.size() == 0 ||
-			combination.size() > 0 && i >= combination.back())) {
-			continue;
-		}
+	for (int i = start; i <= N; i++) {
 		combination.push_back(i);
-		
 		solve(i);
 		combination.pop_back();
 	}
@@ -29,7 +23,6 @@ void solve(int start) {
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
-
 	cin >> N >> M;
 	solve(1);
 }
