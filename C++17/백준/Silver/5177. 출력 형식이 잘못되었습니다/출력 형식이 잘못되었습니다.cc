@@ -60,10 +60,8 @@ string Formalize(string input) {
     }
     string output = "";
     for (const string& w : words) {
-        if (!output.empty()) {
-            output += " ";
-        }
         output += w;
+        output += " ";
     }
 
     return output;
