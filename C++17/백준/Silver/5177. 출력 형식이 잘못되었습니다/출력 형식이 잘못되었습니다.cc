@@ -8,20 +8,15 @@
 using namespace std;
 
 string Formalize(string input) {
-    // 공백 제거
-    input.erase(input.begin(), find_if(input.begin(), input.end(), [](unsigned char c) { return !isspace(c); }));
-    input.erase(find_if(input.rbegin(), input.rend(), [](unsigned char c) { return !isspace(c); }).base(), input.end());
-
     stringstream ss(input);
-
     vector<string> words;
     string word;
     while (getline(ss, word, ' ')) { // 공백 구분
         // 대소문자 구분하지 않음
         transform(word.begin(), word.end(), word.begin(),
-                  [](unsigned char c) { return tolower(c); });
+            [](unsigned char c) { return tolower(c); });
 
-        for (size_t i = 0; i < word.length(); i++) { // size_t 사용
+        for (size_t i = 0; i < word.length(); i++) {
             if (word[i] > 122 || word[i] < 97) {
                 // 숫자 생략
                 if (word[i] >= 48 && word[i] < 58) continue;
@@ -38,7 +33,8 @@ string Formalize(string input) {
                 if (i + 1 != word.length()) {
                     word = word.substr(i + 1, word.length() - (i + 1));
                     i = 0;
-                } else
+                }
+                else
                     word = "";
 
                 switch (special) {
@@ -51,7 +47,7 @@ string Formalize(string input) {
                     special = ')'; // 닫는 괄호 통일
                     break;
                 case ';':
-                    special = ','; // , == ;
+                    special = ','; // 쉼표 == 세미콜론
                     break;
                 }
 
@@ -62,8 +58,6 @@ string Formalize(string input) {
         if (word != "")
             words.push_back(word);
     }
-
-    // 공백을 하나로 통일
     string output = "";
     for (const string& w : words) {
         if (!output.empty()) {
@@ -97,7 +91,8 @@ int main() {
 
         if (inputA == inputB) {
             cout << "Data Set " << i + 1 << ": equal\n";
-        } else {
+        }
+        else {
             cout << "Data Set " << i + 1 << ": not equal\n";
         }
     }
