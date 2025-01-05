@@ -20,7 +20,7 @@ int main() {
 		
 		for (int i = 0; i < input.size(); i++) {
 			if (string("aeiou").find(input[i]) == -1) continue;
-			if (ptr != -1) result = 1LL * result * (i - ptr) % mod;
+			if (ptr != -1) result = result * (i - ptr) % mod;
 			ptr = i;
 		}
 		
