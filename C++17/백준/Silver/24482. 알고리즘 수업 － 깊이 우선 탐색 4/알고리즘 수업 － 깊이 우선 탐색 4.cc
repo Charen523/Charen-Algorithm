@@ -1,46 +1,50 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <functional>
+
 using namespace std;
 
+int n, m, r;
+vector<vector<int>> graph;
+vector<bool> visited;
+void dfs(vector<int>& answer, int v, int depth = 0) {
+	visited[v] = true;
+	answer[v] = depth;
 
-bool visited[200000];
-vector<int> graph[200000];
-int index[200000];
-void dfs(int start, int depth) {
-    if (visited[start] == true) {
-        return;
-    }
-    visited[start] = true;
-    index[start] = depth;
-    sort(graph[start].begin(), graph[start].end(), greater<int>());
-    for (int i = 0; i < graph[start].size(); i++) {
-        int y = graph[start][i];
-        dfs(y, depth + 1);
-    }
+	for (int i = 0; i < graph[v].size(); i++) {
+		int nextV = graph[v][i];
+		if (!visited[nextV]) {
+			dfs(answer, nextV, depth + 1);
+		}
+	}
 }
 
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
 
-int main(void) {
-    int n, m, start;
-    cin >> n >> m >> start;
-    for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        graph[a].push_back(b);
-        graph[b].push_back(a);
-    }
+	cin >> n >> m >> r;
 
-    dfs(start, 0);
-    for (int i = 1; i <= n; i++) {
-        if (visited[i] == false) {
-            index[i] = -1;
-        }
-    }
-    for (int i = 1; i <= n; i++) {
-        cout << index[i] << '\n';
-    }
+	graph.resize(n + 1);
+	for (int i = 1; i <= m; i++) {
+		int s, e;
+		cin >> s >> e;
+		graph[s].push_back(e);
+		graph[e].push_back(s);
+	}
 
+	for (int i = 1; i <= n; i++) {
+		sort(graph[i].begin(), graph[i].end(), greater<int>());
+	}
 
+	vector<int> answer(n + 1, -1);
+	visited.resize(n + 1);
+	dfs(answer, r);
+
+	for (int i = 1; i <= n; i++) {
+		cout << answer[i] << '\n';
+	}
+
+	return 0;
 }
-
