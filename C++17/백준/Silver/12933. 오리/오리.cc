@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unordered_set>
+#include <string>
 
 using namespace std;
 
@@ -13,27 +14,24 @@ int main() {
 	const string duck = "quack";
 	unordered_multiset<char> ducks;
 
-	for (int i = 0; i < sound.size(); i++) {
-		//prevChar, curChar 찾기.
-		char prevChar, curChar = sound[i];
-		if (curChar == duck.front()) prevChar = duck.back();
-		else prevChar = duck[duck.find(curChar) - 1];
+	for (char curChar : sound) {
+		char prevChar = (curChar == duck.front()) ? duck.back() : duck[duck.find(curChar) - 1];
+		
+		auto it = ducks.find(prevChar);
 
 		if (curChar == duck.front()) { //q일 때.
-			auto it = ducks.find(prevChar); //직전 문자 ('k')
-			if (it != ducks.end()) ducks.erase(it); //존재하면 지우기.
-			ducks.insert('q'); //없으면 추가, 있으면 대체.
+			if (it != ducks.end()) 
+				ducks.erase(it); //이전 문자가 존재하면 제거.
+			ducks.insert('q'); // 새 'q' 추가.
 		}
 		else {
-			auto it = ducks.find(prevChar); //직전 문자
 			if (it == ducks.end()) { //직전 문자가 없을 시 잘못된 quack.
 				cout << -1;
 				return 0; //프로그램 종료.
 			}
-			else { //문자 대체.
-				ducks.erase(it); 
-				ducks.insert(curChar);
-			}
+			
+			ducks.erase(it);
+			ducks.insert(curChar);
 		}
 	}
 
