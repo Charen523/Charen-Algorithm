@@ -6,17 +6,17 @@
 
 using namespace std;
 
-int dp[1000001];
 int solve(int n) {
+	int dp[3];
 	dp[1] = 1;
 	dp[2] = 2;
 
 	for (int i = 3; i <= n; i++) {
 		//현 단계 = 전배열 + 1 or 전전배열 + 00.
-		dp[i] = (dp[i - 1] + dp[i - 2]) % 15746; 
+		dp[i % 3] = (dp[(i - 1) % 3] + dp[(i - 2) % 3]) % 15746; 
 	}
 
-	return dp[n]; //반환
+	return dp[n % 3]; //반환
 }
 
 int main() {
