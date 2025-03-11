@@ -12,8 +12,8 @@ int main() {
 	cin >> n;
 
 	vector<int> red_wine(n + 1);
-	vector<vector<int>> dp(n + 1, vector<int>(2));
-	for (int i = 1; i < n + 1; i++) {
+	vector<vector<int>> dp(3, vector<int>(2));
+	for (int i = 1; i <= n; i++) {
 		cin >> red_wine[i];
 	}
 
@@ -29,39 +29,40 @@ int main() {
 	}
 
 	for (int i = 3; i <= n; i++) {
-		if (dp[i - 1][1] == 2) { //다음잔=빼고 집기.
-			int A = dp[i - 1][0];
-			int B = dp[i - 2][0] + red_wine[i];
-			int C = dp[i - 3][0] + red_wine[i - 1] + red_wine[i];
+		int idx = i % 3;
+		if (dp[(i - 1) % 3][1] == 2) { //다음잔=빼고 집기.
+			int A = dp[(i - 1) % 3][0];
+			int B = dp[(i -2) % 3][0] + red_wine[i];
+			int C = dp[idx][0] + red_wine[i - 1] + red_wine[i];
 
 			if (A < B) {
 				if (B < C) {
-					dp[i][0] = C;
-					dp[i][1] = 2;
+					dp[idx][0] = C;
+					dp[idx][1] = 2;
 				}
 				else {
-					dp[i][0] = B;
-					dp[i][1] = 1;
+					dp[idx][0] = B;
+					dp[idx][1] = 1;
 				}
 			}
 			else {
 				if (A < C) {
-					dp[i][0] = C;
-					dp[i][1] = 2;
+					dp[idx][0] = C;
+					dp[idx][1] = 2;
 				}
 				else {
-					dp[i][0] = A;
-					dp[i][1] = 0;
+					dp[idx][0] = A;
+					dp[idx][1] = 0;
 				}
 			}
 		}
 		else {
-			dp[i][0] = dp[i - 1][0] + red_wine[i];
-			dp[i][1] = dp[i - 1][1] + 1;
+			dp[idx][0] = dp[(i - 1) % 3][0] + red_wine[i];
+			dp[idx][1] = dp[(i - 1) % 3][1] + 1;
 		}
 	}
 
-	cout << dp[n][0];
+	cout << dp[n % 3][0];
 
 	return 0;
 }
