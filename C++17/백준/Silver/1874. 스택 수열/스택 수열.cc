@@ -1,50 +1,35 @@
 #include <iostream>
-#include <queue>
 #include <stack>
-#include <vector>
 using namespace std;
 
 int main() {
-	ios::sync_with_stdio(0);	
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-	int n; 
-	cin >> n;
+    int n, idx = 0;
+    cin >> n;
 
-	int input;
-	queue<int> arr;
-	for (int i = 0; i < n; i++) {
-		cin >> input;
-		arr.push(input);
-	}
+    stack<int> s;
+    string output;
+    
+    while (n--) {
+        int temp;
+        cin >> temp;
 
-	int idx = 0;
-	stack<int> s;
-	vector<char> v;
-	for (int i = 0; i < n; i++) {
-		int temp = arr.front();
-		arr.pop();
+        while (idx < temp) { // push
+            s.push(++idx);
+            output += "+\n";
+        }
 
-		//push
-		for (idx; idx < temp; idx++) {
-			s.push(idx);
-			v.push_back('+');
-		}
+        if (s.top() == temp) { // pop
+            s.pop();
+            output += "-\n";
+        } else {
+            cout << "NO\n";
+            return 0;
+        }
+    }
 
-		//pop
-		if (s.top() == temp - 1) {
-			s.pop();
-			v.push_back('-');
-		}
-		else {
-			cout << "NO";
-			return 0;
-		}
-	}
-
-	for (int i = 0; i < v.size(); i++) {
-		cout << v[i] << '\n';
-	}
-     
-	return 0;
+    cout << output;
+    return 0;
 }
