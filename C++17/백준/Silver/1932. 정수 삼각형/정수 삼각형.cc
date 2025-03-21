@@ -10,28 +10,28 @@ int main() {
 	int n; 
 	cin >> n;
 
-	int input;
+	int input, result = 0;
 	vector<int> dp(n, 0);
 
-	for (int i = 0; i < n - 1; i++) {
+	for (int i = 0; i < n; i++) {
 		for (int j = 0; j <= i; j++) {
 			cin >> input;
 			dp[j] += input;
 		}
 		
-		vector<int> temp = dp;
-		for (int j = 1; j <= i; j++) {
-			dp[j] = max(temp[j], temp[j - 1]); //부모 중 택1
-		}
-		
-		dp[i + 1] = temp[i]; //부모 고정.
+		if (i != n - 1) {
+			vector<int> temp = dp;
+
+			for (int j = 1; j <= i; j++) {
+				dp[j] = max(temp[j], temp[j - 1]); //부모 중 택1
+			}
 			
+			dp[i + 1] = temp[i]; //부모 고정.
+		}
+		else break;
 	}
 
-	int result = 0;
 	for (int i = 0; i < n; i++) {
-		cin >> input;
-		dp[i] += input;
 		result = max(result, dp[i]);
 	}
     
