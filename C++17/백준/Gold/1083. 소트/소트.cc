@@ -2,26 +2,29 @@
 #include <vector>
 using namespace std;
 
-void sort(vector<int>& v, int count) {
-    int size = static_cast<int>(v.size());
-    int ptr = 0;
+int N, S;
 
-    while (count > 0 && ptr < size) {
-        int maxIdx = ptr;
-        int limit = min(size - 1, ptr + count);
+void sort(vector<int>& v) {
+    int ptr = 0; //바꿀 자리 위치
 
-        for (int i = ptr; i <= limit; i++) {
-            if (v[maxIdx] < v[i]) {
+    //앞으로 끌어올릴 수의 위치
+    int maxIdx, maxValue;
+
+    while (S > 0 && ptr < N - 1) {
+        //끌올 수 초기화
+        maxIdx = ptr; maxValue = v[ptr];
+
+        int limit = min(N - 1, ptr + S);
+        for (int i = ptr + 1; i <= limit; i++) {
+            if (maxValue < v[i]) {
                 maxIdx = i;
+                maxValue = v[i];
             }
         }
 
-        if (maxIdx != ptr) {
-            count -= (maxIdx - ptr);
-
-            for (int i = maxIdx; i > ptr; i--) {
-                swap(v[i], v[i - 1]);
-            }
+        for (int i = maxIdx; i > ptr; i--) {
+            swap(v[i], v[i - 1]);
+            S--;
         }
 
         ptr++;
@@ -29,25 +32,19 @@ void sort(vector<int>& v, int count) {
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    int N;
     cin >> N;
-
     vector<int> v(N);
     for (int i = 0; i < N; i++) {
         cin >> v[i];
     }
-
-    int S;
     cin >> S;
-
-    sort(v, S);
+    sort(v);
 
     for (int i = 0; i < N; i++) {
         cout << v[i] << ' ';
     }
-
     return 0;
 }
