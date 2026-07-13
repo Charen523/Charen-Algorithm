@@ -1,28 +1,27 @@
 #include <string>
-#include <string_view>
-#include <algorithm>
+#include <vector>
 
 using namespace std;
 
 string solution(string number, int k) {
-    string answer;
-    string_view view = number;
-
-    int target_length = number.size() - k;
-
-    while (k > 0 && answer.size() < target_length) {
-        string_view sub = view.substr(0, k + 1);
-
-        auto it = max_element(sub.begin(), sub.end());
-        int index = it - sub.begin();
-
-        answer += *it;
-        view = view.substr(index + 1);
-        k -= index;
+    string answer = "";
+    
+    int ptr = 0;
+    int result_size = number.size() - k;
+    while (answer.size() < result_size) {
+        char target = 0;
+        int max_idx = 0;
+        for (int i = ptr; i <= ptr + k; i++) {
+            if (target < number[i]) {
+                target = number[i];
+                max_idx = i;
+            }
+        }
+        
+        answer += target;
+        k -= max_idx - ptr;
+        ptr = max_idx + 1;
     }
-
-    int remaining = target_length - answer.size();
-    answer.append(view.begin(), view.begin() + remaining);
-
+    
     return answer;
 }
